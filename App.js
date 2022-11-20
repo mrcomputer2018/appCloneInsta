@@ -3,6 +3,8 @@ import
 { View, StyleSheet, Image, TouchableOpacity, FlatList } 
 from 'react-native';
 
+import Lista from './src/Lista';
+
 class App extends Component {
 
     constructor(props) { 
@@ -81,7 +83,7 @@ class App extends Component {
                 <FlatList 
                 showsHorizontalScrollIndicator={false}
                 data={ this.state.feed }
-                renderItem={({ item }) =>}
+                renderItem={ ({ item }) => <Lista data={ item } /> }
                 />
             </View>
         );
