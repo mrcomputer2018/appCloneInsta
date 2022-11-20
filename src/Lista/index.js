@@ -13,7 +13,7 @@ class Lista extends Component{
   render(){
     return(
       <View>
-        <Text>Feed...</Text>
+        <Text>{ this.state.feed.nome }</Text>
       </View>
     );
   }
