@@ -10,6 +10,58 @@ class Lista extends Component{
     this.state = { 
       feed: this.props.data
     };
+
+    this.mostraLikes = this.mostraLikes.bind(this);
+    this.darLike = this.darLike.bind(this);
+    this.carregaIcone = this.carregaIcone.bind(this);
+
+  }
+
+  mostraLikes(likers){
+    let feed = this.state.feed;
+
+   /*  se a foto e menor ou igual a zero */
+    if(feed.likers <= 0){
+      return; /* para nao mostrar nada */
+    }
+
+    return(
+      <Text style={ styles.txtLikes }>
+        { feed.likers } { feed.likers > 1 ? 'curtidas' : 'curtida' }
+      </Text>
+    );
+  }
+
+  darLike() {
+    let feed = this.state.feed;
+
+    /* verificando se ja esta likeado */
+    if( feed.likeada === true ){
+      this.setState({
+        feed: {
+          /* pegando tudo de feed e so alterando dois */
+          ...feed,
+          likeada: false,
+          likers: feed.likers - 1,
+        }
+      });
+    }
+    else {
+      this.setState({
+        feed: {
+          ...feed,
+          likeada: true,
+          likers: feed.likers + 1,
+        }
+      });
+    }
+
+  }
+
+  carregaIcone(likeada) {
+   
+    return likeada ? require('../img/likeada.png') : require('../img/like.png');
+  
   }
 
   render(){
@@ -35,10 +87,11 @@ class Lista extends Component{
 
         {/* botoes */}
         <View style={ styles.viewBtn }>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={ this.darLike }>
             <Image 
             style={ styles.iconLike } 
-            source={require('../img/like.png')}
+            source={ this.carregaIcone(this.state.feed.likeada) }
+
             />
           </TouchableOpacity>
 
@@ -48,7 +101,10 @@ class Lista extends Component{
             source={require('../img/send.png')}
             />
           </TouchableOpacity>
-        </View> 
+        </View>
+        
+        {/* like */}
+        {this.mostraLikes(this.state.feed.likers)}
 
         {/* rodape */}
         <View style={ styles.viewFooter }>
@@ -80,6 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'left',
     color: '#000',
+    paddingLeft: 8,
   },
   imagePerfil : {
     width: 50,
@@ -96,7 +153,8 @@ const styles = StyleSheet.create({
   },
   viewBtn: {
     flexDirection: 'row',
-    padding: 5,
+    padding: 8,
+    marginTop: 8,
   },
   iconLike: {
     width: 33,
@@ -108,6 +166,7 @@ const styles = StyleSheet.create({
   viewFooter: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
   },
   nomeFooter: {
     fontWeight: 'bold',
@@ -119,6 +178,11 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     fontSize: 15,
     color: '#000',
+  },
+  txtLikes: {
+    fontWeight: 'bold',
+    marginLeft: 8,
+    marginBottom: 5,
   },
 });
 
